@@ -40,12 +40,15 @@ class LineItemsController < ApplicationController
   # POST /line_items
   # POST /line_items.json
   def create
-    @line_item = LineItem.new(params[:line_item])
+    @cart = current_cart
+    product = Product.find(params[:product_id])
+    @line_item = @cart.add_product(product.id)
+    #@line_item = LineItem.new(params[:line_item])
 
     respond_to do |format|
-      if @line_item.save
-        format.html { redirect_to @line_item, notice: 'Line item was successfully created.' }
-        format.json { render json: @line_item, status: :created, location: @line_item }
+     if @line_item.save
+        format.html { redirect_to @line_item.cart }
+        format.json { render json: @line_item,status: :created, location: @line_item }
       else
         format.html { render action: "new" }
         format.json { render json: @line_item.errors, status: :unprocessable_entity }
