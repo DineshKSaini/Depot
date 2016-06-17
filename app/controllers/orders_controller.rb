@@ -1,13 +1,14 @@
 class OrdersController < ApplicationController
+  skip_before_filter :authorize, only: [:new, :create]
   # GET /orders
   # GET /orders.json
   def index
-    @orders = @orders = Order.paginate page: params[:page], order: 'created_at desc',per_page: 10
+     @orders = Order.order('created_at desc').paginate(page: params[:page], per_page: 10)
     #Order.all
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @orders }
+      format.json { render json: @order}
     end
   end
 
@@ -53,7 +54,7 @@ class OrdersController < ApplicationController
       if @order.save
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
-        OrderNotifier.received(@order).deliver
+        OrderNotifier.received(@order).deliver_later#.deliver
         format.html { redirect_to store_url, notice:'Thank you for your order.' }
         #format.html { redirect_to @order, notice: 'Order was successfully created.' }
         format.json { render json: @order, status: :created, location: @order }
@@ -89,6 +90,7 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to orders_url }
+      format.js{}
       format.json { head :ok }
     end
   end

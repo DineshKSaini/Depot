@@ -10,22 +10,13 @@
           </ul>
         </div>
     <% end %>
-    <div class="field">
-      <%= f.label :title %><br />
-      <%= f.text_field :title %>
-    </div>
-    <div class="field">
-      <%= f.label :description %><br />
-      <%= f.text_area :description, rows: 6 %>
-    </div>
-    <div class="field">
-      <%= f.label :image_url %><br />
-      <%= f.text_field :image_url %>
-    </div>
-    <div class="field">
-      <%= f.label :price %><br />
-      <%= f.text_field :price %>
-    </div>
+     <%= form_tag do %>
+    <P>
+      <%= text_field_tag :query, params[:query] %>
+      <%= submit_tag "Search Products" , name: nil %>
+    </P>
+    <% end %>
+    <%= render partial: 'products/fields', locals: {builder: f} %>
     <div class="actions">
       <%= f.submit %>
     </div>

@@ -1,5 +1,20 @@
 <p id="notice"><%= notice %></p>
 
-
+<table>
+	<tr> 
+	<td>
+          <%= image_tag(@product.image_url, class: 'list_image') %>
+    </td>
+    </tr>
+    <tr>
+    	<%= @product.title %>
+    </tr>
+    <tr>
+    	<%= @product.price %>
+    </tr>
+    <tr>
+    	<%= truncate(strip_tags(@product.description),length: 80) %>
+    </tr>
+</table>
 <%= link_to 'Edit', edit_product_path(@product) %> |
 <%= link_to 'Back', products_path %>

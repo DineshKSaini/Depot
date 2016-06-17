@@ -6,7 +6,7 @@ gem 'rails', '3.1.4'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2'
-
+gem 'nested_form'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -24,19 +24,24 @@ end
 gem 'jquery-rails', '~> 2.3.0'
 
 # To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
+ gem 'bcrypt-ruby', '~> 3.0.0'
 
 # Use unicorn as the web server
 # gem 'unicorn'
 
 # Deploy with Capistrano
 # gem 'capistrano'
-
+gem 'pry'
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 gem 'will_paginate', '~> 3.0'
-
+gem 'elasticsearch-rails', '0.1.8'
+gem 'elasticsearch-model', '0.1.8'
+gem "daemons", '1.2.2'
+gem 'sidekiq', '2.17.8'
+gem 'sidekiq-limit_fetch', '2.4.2'
 group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false
+
 end

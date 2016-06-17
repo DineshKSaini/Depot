@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @category.name %>
+</p>
+
+<table>
+  <% @category.products.each do |product| %>
+      <tr >
+        <td>
+          <%= image_tag(product.image_url, class: 'list_image') %>
+        </td>
+        <td >
+          
+            <%= product.title %>
+        </td>
+        <td><%= truncate(strip_tags(product.description),length: 80) %>
+                  
+        </td>
+        <td>
+        	<%= product.price %>
+        </td>
+        
+      </tr>
+  <% end %>
+</table>
+<%= link_to 'Edit', edit_category_path(@category) %> |
+<%= link_to 'Back', categories_path %>

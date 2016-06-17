@@ -1,4 +1,5 @@
 class CartsController < ApplicationController
+  skip_before_filter :authorize, only: [:create, :update, :destroy]
   # GET /carts
   # GET /carts.json
   def index
@@ -72,7 +73,20 @@ class CartsController < ApplicationController
         format.json { render json: @cart.errors, status: :unprocessable_entity }
       end
     end
+
+    respond_to do |format|
+      if @cart.update_attributes(params[:cart])
+        format.html { redirect_to @cart, notice: 'Cart was successfully updated.' }
+        format.json { head :ok }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @cart.errors, status: :unprocessable_entity }
+      end
+    end
   end
+
+
+
 
   # DELETE /carts/1
   # DELETE /carts/1.json
@@ -81,8 +95,8 @@ class CartsController < ApplicationController
     @cart.destroy
     session[:cart_id] = nil
     respond_to do |format|
-    format.html { redirect_to store_url }
-    format.json { head :no_content }
+      format.html { redirect_to store_url }
+      format.json { head :no_content }
     end
   end
 end

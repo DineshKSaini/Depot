@@ -2,13 +2,32 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-    @products = Product.all
-    @orders = Order.paginate page: params[:page], order: 'created_at desc',
-    per_page: 10
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @products }
+
+    if !params[:search].blank?
+      @products=Product.search({
+        'query' => {
+          'bool' => {
+            'must' => [{
+              'query_string' => {
+                'query' => "*#{params[:search]}*",
+                'fields' => ["name", "description"],
+                'default_operator' => "OR"
+              }             
+            }]
+          }
+        }  
+      })
+    else
+      @products = Product.all
     end
+      #@orders = Order.paginate page: params[:page], order: 'created_at desc',
+      #per_page: 10
+      respond_to do |format|
+        format.html # index.html.erb
+        format.js{}
+        format.json { render json: @products.records.all.to_json }
+      end
+    
   end
 
   # GET /products/1

@@ -1,0 +1,58 @@
+
+
+<%= nested_form_for @category do |f| %>
+  <% if @category.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@category.errors.count, "error") %> prohibited this category from being saved:</h2>
+
+      <ul>
+      <% @category.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %> 
+
+  <div class="field">
+    <div style="background:#ffff">
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+      </div>
+
+ 
+      <div id="addproducts">      
+        <div id="products_nested"style="align:bottom">
+        <h1>Products Details</h1>
+            <%= f.fields_for :products  do |builder| %>
+              <div class="field">
+                <%= builder.label :title %><br />
+                <%= builder.text_field :title %>
+              </div>
+              <div class="field">
+                <%= builder.label :description %><br />
+                <%= builder.text_area :description, rows: 6 %>
+              </div>
+              <div class="field">
+                <%= builder.label :image_url %><br />
+                <%= builder.text_field :image_url %>
+              </div>
+              <div class="field">
+                <%= builder.label :price %><br />
+                <%= builder.text_field :price %>
+              </div>
+            <%= builder.link_to_remove "Remove this Product" %> <% end %>
+        </div>
+        <p><%= f.link_to_add "Add a Product", :products, :data => { :target => "#addproducts" } %></p>
+
+      </div> 
+      
+       
+      
+     
+
+ <div class="actions">
+    <%= f.submit %>
+     </div>
+<% end %>
+
+

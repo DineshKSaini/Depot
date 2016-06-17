@@ -32,4 +32,5 @@ Depot::Application.configure do
  config.action_mailer.default_url_options = {
   :host => "localhost",
   :port => 3000}
+  Rails.configuration.elastic_host = "localhost:9200"
 end
