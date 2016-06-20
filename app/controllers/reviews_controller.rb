@@ -13,6 +13,7 @@ class ReviewsController < ApplicationController
   # GET /reviews/1
   # GET /reviews/1.json
   def show
+    #binding.pry
     @review = Review.select('products.id, products.title, reviews.description').joins(:product).find(params[:id])
     
     respond_to do |format|
@@ -64,7 +65,7 @@ class ReviewsController < ApplicationController
      #binding.pry
     respond_to do |format|
       if @review.update_attributes(params[:review])
-        format.html { redirect_to product_reviews_path(@review), notice: 'Review was successfully updated.' }
+        format.html { redirect_to product_review_path(@review.product, @review), notice: 'Review was successfully updated.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }

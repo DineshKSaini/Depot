@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-
+    #binding.pry
     if !params[:search].blank?
       @products=Product.search({
         'query' => {
@@ -10,15 +10,40 @@ class ProductsController < ApplicationController
             'must' => [{
               'query_string' => {
                 'query' => "*#{params[:search]}*",
-                'fields' => ["name", "description"],
+                'fields' => ["title", "description"],
                 'default_operator' => "OR"
               }             
-            }]
+            }],
           }
-        }  
+        }
+        # 'nested'=>{
+        #   'path'=>"categories",
+        #   'query' => {
+        #   'bool' => {
+        #     'must' => [{
+        #       'query_string' => {
+        #         'query' => "*#{params[:search]}*",
+        #         'fields' => ["name"],
+        #         'default_operator' => "OR"
+        #       }             
+        #     }],
+        #   }
+        # }
+        # }  
       })
+    #binding.pry
+
     else
-      @products = Product.all
+      #@products = Product.all
+     @products= Product.redis_get
+     #binding.pry
+     # @products = JSON.parse(@products)
+     # binding.pry
+
+     # if @products.present?
+     #    @products = JSON.parse(@products)
+     #    binding.pry
+     #  end
     end
       #@orders = Order.paginate page: params[:page], order: 'created_at desc',
       #per_page: 10
@@ -34,10 +59,10 @@ class ProductsController < ApplicationController
   # GET /products/1.json
   def show
     @product = Product.find(params[:id])
-
+    #binding.pry
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @product }
+    #  format.json { render json: @product }
     end
   end
 
@@ -64,6 +89,7 @@ class ProductsController < ApplicationController
 
     respond_to do |format|
       if @product.save
+        
         format.html { redirect_to @product, notice: 'Product was successfully created.' }
         format.json { render json: @product, status: :created, location: @product }
       else
@@ -77,7 +103,6 @@ class ProductsController < ApplicationController
   # PUT /products/1.json
   def update
     @product = Product.find(params[:id])
-
     respond_to do |format|
       if @product.update_attributes(params[:product])
         format.html { redirect_to @product, notice: 'Product was successfully updated.' }
@@ -93,7 +118,11 @@ class ProductsController < ApplicationController
   # DELETE /products/1.json
   def destroy
     @product = Product.find(params[:id])
+    #binding.pry
+    #remove @product from $redis datastructure
+    #$redis.LREM("product",@product)
     @product.destroy
+    #binding.pry
 
     respond_to do |format|
       format.html { redirect_to products_url }

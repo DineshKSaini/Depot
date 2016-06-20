@@ -2,6 +2,7 @@ var testingdata;
 $(document).on("keypress", "#search", function(){
 	var search_value = $(this).val();
 	if(search_value.length >= 3){
+		$('#append_list').destroy;
 		window.xhr = $.ajax({
 			url: "/products",
 			data: {search: search_value},

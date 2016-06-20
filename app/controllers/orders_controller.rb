@@ -54,7 +54,7 @@ class OrdersController < ApplicationController
       if @order.save
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
-        OrderNotifier.received(@order).deliver_later#.deliver
+        OrderNotifier.delay_for(2.minutes,:retry => false).received(@order)#.deliver
         format.html { redirect_to store_url, notice:'Thank you for your order.' }
         #format.html { redirect_to @order, notice: 'Order was successfully created.' }
         format.json { render json: @order, status: :created, location: @order }

@@ -8,7 +8,11 @@ Depot::Application.routes.draw do
     get 'login' => :new
     post 'login' => :create
     delete 'logout' => :destroy
-    end
+  end
+
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
+  root to: 'store#index', as: 'store'
 
   #get "sessions/new"
 
@@ -33,8 +37,7 @@ Depot::Application.routes.draw do
       get :who_bought
     end
   end
-
-  root to: 'store#index', as: 'store'
+  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

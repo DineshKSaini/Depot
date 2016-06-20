@@ -37,9 +37,11 @@ gem 'pry'
 gem 'will_paginate', '~> 3.0'
 gem 'elasticsearch-rails', '0.1.8'
 gem 'elasticsearch-model', '0.1.8'
-gem "daemons", '1.2.2'
-gem 'sidekiq', '2.17.8'
-gem 'sidekiq-limit_fetch', '2.4.2'
+#gem "daemons", '1.2.2'
+gem 'sidekiq'
+gem 'sinatra', '>= 1.3.0', :require => nil
+#gem 'sidekiq-limit_fetch', '2.4.2'
+gem 'redis'
 group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false
