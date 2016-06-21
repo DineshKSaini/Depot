@@ -23,34 +23,41 @@ class Product < ActiveRecord::Base
   after_create :redis_push
   after_update :redis_update
   after_destroy :redis_update
-  after_save    :update_index#Product.__elasticsearch__.create_index! force: true #{ logger.debug ["Updating document... ", __elasticsearch__.index_document ].join }
-  after_destroy { logger.debug ["Deleting document... ", __elasticsearch__.delete_document].join }
- mapping do
-  indexes :title
-  indexes :description
-  indexes :category , type: 'nested' do
-  indexes :name
-  end 
+  #after_save    :update_index#Product.__elasticsearch__.create_index! force: true #{ logger.debug ["Updating document... ", __elasticsearch__.index_document ].join }
+  #after_destroy  :update_index #{ logger.debug ["Deleting document... ", __elasticsearch__.delete_document].join }
+  after_commit :delete_product, on: :destroy
+  after_commit :index_product, on: :create
+
+  mapping do
+    indexes :title
+    indexes :id, type: "integer"
+    indexes :description
+    indexes :category , type: 'nested' do
+    indexes :name
+    end 
   end
 
   #update elastic search index
-
-  def update_index
-    #binding.pry
-    #Product.__elasticsearch__.create_index! force: true
-    Product.import
+  def delete_product
+      self.__elasticsearch__.delete_document
   end
+
+  def index_product
+    product = self
+    product.reload
+    product.__elasticsearch__.index_document
+  end
+  
 #Product.first.update_attribute :title, 'Updated!'
 
- def as_indexed_json
-   self.as_json({
-    only: [:title, :description],
-    include: {
-      category: { only: :name },
-    
-    }
-  })
- end
+  def as_indexed_json(options = {})
+   json = {
+      id: id,
+      title: title,
+      description: description,
+      category: category.as_json({only: [:name]}),
+   }
+  end
 
 
   def self.import
@@ -77,7 +84,8 @@ class Product < ActiveRecord::Base
 #update redis  record using side key
   def redis_update
     #binding.pry
-    $redis.LTRIM('products',0,-$redis.LLEN('products'))
+    #$redis.LTRIM('products',0,-$redis.LLEN('products'))
+    $redis.DEL('products')
     Product.all.each{|p| $redis.LPUSH("products", p.to_json)}
     $redis.LRANGE('products',0,-1)
   end

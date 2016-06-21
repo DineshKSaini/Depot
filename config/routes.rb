@@ -1,4 +1,6 @@
 Depot::Application.routes.draw do
+  devise_for :logins
+
   resources :reviews
 
   resources :categories

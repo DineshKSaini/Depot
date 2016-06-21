@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  #before_action :authenticate_login!
   before_filter :authorize
   private
 	def current_cart

@@ -3,4 +3,4 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 $ ->
 $('.store .entry > img').click ->
-$(this).parent().find(':submit').click()
+	$(this).parent().find(':submit').click()

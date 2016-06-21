@@ -14,6 +14,22 @@ class ProductsController < ApplicationController
                 'default_operator' => "OR"
               }             
             }],
+            'should' => {
+              'nested'=>{
+                'path'=>"category",
+                'query' => {
+                  'bool' => {
+                    'must' => [{
+                      'query_string' => {
+                        'query' => "*#{params[:search]}*",
+                        'fields' => ["name"],
+                        'default_operator' => "OR"
+                      }             
+                    }],
+                  }
+                }
+              }  
+            }
           }
         }
         # 'nested'=>{
