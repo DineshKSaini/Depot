@@ -1,20 +1,27 @@
 Depot::Application.routes.draw do
   #devise_for :members
-
+  devise_scope :user do
+  get 'login', to: 'devise/sessions#new'
+  delete 'logout ',to: 'devise/sessions#destroy'
+end
   devise_for :users do get '/users/sign_out' => 'devise/sessions#destroy' end
+ # devise_for :users, path: 'auth', path_names: { sign_in: 'login', sign_out: 'logout', password: 'secret', confirmation: 'verification', unlock: 'unblock', registration: 'register', sign_up: 'cmon_let_me_in' }
+    #devise_for :users, controllers: { sessions: 'users/sessions' }
 
   resources :reviews
 
   resources :categories
 
   get 'admin' => 'admin#index'
+
+  
   # controller :sessions do
   #   get 'login' => :new
   #   post 'login' => :create
   #   delete 'logout' => :destroy
   # end
   #root to: 'home#index'
-  #match 'login', to: 'users#sign_in', :as=>:sign_in #, via: [:get, :post]
+  #match 'logout', to: 'users#sign_out', :as=>:logout , via: [:get, :post]
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
   root to: 'store#index', as: 'store'

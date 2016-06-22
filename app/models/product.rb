@@ -3,14 +3,18 @@ class Product < ActiveRecord::Base
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
 
-  validates :title, :description, :image_url, presence: true
+  validates :title, :description, presence: true
   validates :price, numericality: {greater_than_or_equal_to: 0.01}
   validates :title, uniqueness: true
-  validates :image_url, allow_blank: true, format: {
-      with:
-          %r{\.(gif|jpg|png)$}i,
-      message: 'must be a URL for GIF, JPG or PNG image.'
-  }
+  has_attached_file :photo, :style => {:small => "150*150>"}
+  validates_attachment_presence :photo
+  validates_attachment_size :photo, :less_than => 5.megabytes
+  validates_attachment_content_type :photo, :content_type => ["image/jpeg","image/png","image/jpg"]
+  # validates :image_url, allow_blank: true, format: {
+  #     with:
+  #         %r{\.(gif|jpg|png)$}i,
+  #     message: 'must be a URL for GIF, JPG or PNG image.'
+  # }
 
   has_many :line_items
   has_many :orders, through: :line_items
@@ -27,6 +31,10 @@ class Product < ActiveRecord::Base
   #after_destroy  :update_index #{ logger.debug ["Deleting document... ", __elasticsearch__.delete_document].join }
   after_commit :delete_product, on: :destroy
   after_commit :index_product, on: :create
+
+  def photo_url
+        photo.url(:small)
+    end
 
   mapping do
     indexes :title

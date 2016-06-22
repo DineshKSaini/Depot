@@ -6,9 +6,13 @@
   <%= builder.label :description %><br />
   <%= builder.text_area :description, rows: 6 %>
 </div>
-<div class="field">
+<!-- <div class="field">
   <%= builder.label :image_url %><br />
   <%= builder.text_field :image_url %>
+</div> -->
+<div class="field">
+  <%= builder.file_field :photo %><br />
+  
 </div>
 <div class="field">
   <%= builder.label :price %><br />

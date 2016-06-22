@@ -52,6 +52,7 @@ class ProductsController < ApplicationController
     else
       #@products = Product.all
      @products= Product.redis_get
+
      #binding.pry
      # @products = JSON.parse(@products)
      # binding.pry
