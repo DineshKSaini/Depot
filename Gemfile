@@ -42,6 +42,8 @@ gem 'sidekiq'
 gem 'sinatra', '>= 1.3.0', :require => nil
 #gem 'sidekiq-limit_fetch', '2.4.2'
 gem 'redis'
+gem 'devise'
+gem "paperclip" #, "~> 5.0.0.beta1"
 group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false

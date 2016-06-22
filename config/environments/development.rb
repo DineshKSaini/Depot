@@ -33,4 +33,5 @@ Depot::Application.configure do
   :host => "localhost",
   :port => 3000}
   Rails.configuration.elastic_host = "localhost:9200"
+  Paperclip.options[:command_path] = "/usr/local/bin/"
 end
