@@ -1,11 +1,14 @@
 Depot::Application.routes.draw do
+ # get "registrations/devise"
+
   #devise_for :members
   devise_scope :user do
   get 'login', to: 'devise/sessions#new'
   delete 'logout ',to: 'devise/sessions#destroy'
 end
-  devise_for :users do get '/users/sign_out' => 'devise/sessions#destroy' end
- # devise_for :users, path: 'auth', path_names: { sign_in: 'login', sign_out: 'logout', password: 'secret', confirmation: 'verification', unlock: 'unblock', registration: 'register', sign_up: 'cmon_let_me_in' }
+devise_for :users, :controllers => { registrations: 'registrations' }
+  #devise_for :users do get '/users/sign_out' => 'devise/sessions#destroy' end
+  #devise_for :users,  path_names: { sign_in: 'login', sign_out: 'logout', password: 'secret', confirmation: 'verification', unlock: 'unblock', registration: 'register', sign_up: 'cmon_let_me_in' }
     #devise_for :users, controllers: { sessions: 'users/sessions' }
 
   resources :reviews
@@ -13,6 +16,7 @@ end
   resources :categories
 
   get 'admin' => 'admin#index'
+  post 'admin' => 'admin#assign_role'
 
   
   # controller :sessions do

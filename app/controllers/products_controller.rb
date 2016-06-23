@@ -1,6 +1,7 @@
 class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
+  load_and_authorize_resource
   def index
     #binding.pry
     if !params[:search].blank?
@@ -50,8 +51,11 @@ class ProductsController < ApplicationController
     #binding.pry
 
     else
-      #@products = Product.all
+      #@products = Product.order('created_at desc').paginate(page: params[:page], per_page: 1)
      @products= Product.redis_get
+     ##@products = @products.paginate(page: params[:page], per_page: 1)
+
+     #@users = User.paginate(:page => params[:page], :per_page => 5)
 
      #binding.pry
      # @products = JSON.parse(@products)

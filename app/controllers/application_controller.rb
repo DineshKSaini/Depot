@@ -3,6 +3,19 @@ class ApplicationController < ActionController::Base
   #before_action :authenticate_login!
   before_filter :authenticate_user!
   #before_filter :authorize
+  #require 'cancan'
+  rescue_from CanCan::AccessDenied do |exception|
+  #flash[:error] = "Access denied."
+  redirect_to '/'
+  end
+
+  def is_user_admin?
+    current_user.present? && current_user.role?(:admin) ? true : false
+  end
+
+  def is_user_customer?
+    current_user.present? && current_user.role?(:customer) ? true : false
+  end
 
   private
     def current_cart
@@ -14,9 +27,16 @@ class ApplicationController < ActionController::Base
         cart
       end
     end
+
   protected
     def authorize  
       redirect_to login_url, notice: "Please log in" unless User.find_by_id(session[:user_id])
     end
+  # protected
+
+  #   def configure_permitted_parameters
+  #       devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:first_name,:last_name, :email, :password) }
+  #       #devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:name, :email, :password, :current_password, :is_female, :date_of_birth) }
+  #   end
 end
 

@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+	before_create :set_role
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -6,5 +7,17 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :first_name,:last_name,:email, :password, :password_confirmation, :remember_me
+  validates :first_name, :last_name, presence: true
+  has_many :roleusers
+  has_many :roles, :through => :roleusers
+  def set_role 
+  	  customer_role = Role.find_by_name('customer')
+  	  self.roles << customer_role
+   end
+
+   def role?(*roles)
+    @role_names ||= self.roles.select(:name).map(&:name)
+    (@role_names & roles.map(&:to_s)).present?
+  end
 end

@@ -44,6 +44,9 @@ gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'redis'
 gem 'devise'
 gem "paperclip" #, "~> 5.0.0.beta1"
+gem "cancan"
+gem 'rspec-rails', '3.3.0'
+gem 'guard-rspec','1.2.2'
 group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false

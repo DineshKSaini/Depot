@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
   # GET /users
   # GET /users.json
+  load_and_authorize_resource
   def index
     #@users = User.all
-    @users = User.order(:name)
+    @users = User.order(:first_name)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -84,4 +85,12 @@ class UsersController < ApplicationController
         format.json { head :no_content }
       end
     end
+
+  #   def getallrole
+  #     @role = Role.all
+  #     respond_to do |format|
+  #       format.json{render json: @role}
+  #   end
+  # end
+    
 end

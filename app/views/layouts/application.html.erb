@@ -8,7 +8,7 @@
     </head>
    
     <body class="<%= controller.controller_name %>">
-
+    
           <div id="banner">
           <%= image_tag("logo.png") %>
           <%= @page_title || "Pragmatic Bookshelf" %>
@@ -20,6 +20,8 @@
           <% end %>
              
           </div>
+
+          
           <div id="columns">
             <div id="side">
                   <div id="cart">
@@ -35,17 +37,25 @@
                   <li><a href="http://www..../news">News</a></li>
                   <li><a href="http://www..../contact">Contact</a></li>
                 </ul>
-                <% if session[:user_id] %>
+                <%# if can? :update , @Store  %>
                   <ul>
+                  <% if can? :index , @Orders  %>
                   <li><%= link_to 'Orders',orders_path%></li>
+                  <% end %>
+                  <% if can? :index , @Products  %>
                   <li><%= link_to 'Products', products_path %></li>
+                  <% end %>
+                  <% if can? :index , @Users  %>
                   <li><%= link_to 'Users',users_path%></li>
+                  <% end %>
                   </ul>
                   <ul>
-                    <li><%= link_to 'Categories',categories_path %> </li>
-                  </ul>
-                  <%= button_to 'Logout', logout_path, method: :delete %>
+                  <% if can? :index , @Categories  %>
+                  <li><%= link_to 'Categories',categories_path %> </li>
                   <% end %>
+                  </ul>
+                  <% #=  button_to 'Logout', logout_path, method: :delete %>
+                  <% #end %>
               </div>
                   <div id="main">
                     <%= yield %>
@@ -53,3 +63,4 @@
             </div>
     </body>
 </html>
+

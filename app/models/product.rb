@@ -6,7 +6,8 @@ class Product < ActiveRecord::Base
   validates :title, :description, presence: true
   validates :price, numericality: {greater_than_or_equal_to: 0.01}
   validates :title, uniqueness: true
-  has_attached_file :photo, :style => {:small => "150*150>"}
+  has_attached_file :photo, :style => {:small => "150*150>" , :medium => "300*300>" , :large => "500*500>"}
+                    
   validates_attachment_presence :photo
   validates_attachment_size :photo, :less_than => 5.megabytes
   validates_attachment_content_type :photo, :content_type => ["image/jpeg","image/png","image/jpg"]
@@ -88,13 +89,26 @@ class Product < ActiveRecord::Base
     })
   end
 
+  def product_json
+    json ={
+      "id" => id,
+      "title" => title,
+      "description" => description,
+      "photo_file_name" => photo.url
+      #price: price
+    }
+    return json
+  end  
   private
 #update redis  record using side key
-  def redis_update
+  def self.redis_update
     #binding.pry
     #$redis.LTRIM('products',0,-$redis.LLEN('products'))
     $redis.DEL('products')
-    Product.all.each{|p| $redis.LPUSH("products", p.to_json)}
+    #Product.all.each{|p| $redis.LPUSH("products", p.to_json)}
+    #binding.pry
+    Product.all.each{|p| $redis.LPUSH("products", p.product_json.to_json)}
+
     $redis.LRANGE('products',0,-1)
   end
 
