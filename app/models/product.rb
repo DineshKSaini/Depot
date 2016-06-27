@@ -3,10 +3,14 @@ class Product < ActiveRecord::Base
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
 
+  has_paper_trail :on => [:update] ,:only => [:price , :title] #trackmodel
+
   validates :title, :description, presence: true
   validates :price, numericality: {greater_than_or_equal_to: 0.01}
   validates :title, uniqueness: true
-  has_attached_file :photo, :style => {:small => "150*150>" , :medium => "300*300>" , :large => "500*500>"}
+  has_attached_file :photo, 
+                    :styles => {:medium => "300x300>",  :large => "630x407>", :small => '50x50>' }
+
                     
   validates_attachment_presence :photo
   validates_attachment_size :photo, :less_than => 5.megabytes
@@ -22,7 +26,7 @@ class Product < ActiveRecord::Base
   #a product should belong to a category
   belongs_to :category
   has_many :reviews
-  before_destroy :ensure_not_referenced_by_any_line_item
+  #before_destroy :ensure_not_referenced_by_any_line_item
 
   #below callbcaks use for $redis
   after_create :redis_push
@@ -101,7 +105,7 @@ class Product < ActiveRecord::Base
   end  
   private
 #update redis  record using side key
-  def self.redis_update
+  def redis_update
     #binding.pry
     #$redis.LTRIM('products',0,-$redis.LLEN('products'))
     $redis.DEL('products')
@@ -132,7 +136,7 @@ class Product < ActiveRecord::Base
 
 # ensure that there are no line items referencing this product
   def ensure_not_referenced_by_any_line_item
-    #binding.pry
+    binding.pry
     if line_items.empty?
     return true
     else

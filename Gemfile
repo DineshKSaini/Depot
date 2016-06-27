@@ -21,7 +21,7 @@ group :assets do
 end
 
 #gem 'jquery-rails'
-gem 'jquery-rails', '~> 2.3.0'
+gem 'jquery-rails', '~> 3.0.0'
 
 # To use ActiveModel has_secure_password
  gem 'bcrypt-ruby', '~> 3.0.0'
@@ -45,8 +45,18 @@ gem 'redis'
 gem 'devise'
 gem "paperclip" #, "~> 5.0.0.beta1"
 gem "cancan"
-gem 'rspec-rails', '3.3.0'
-gem 'guard-rspec','1.2.2'
+# gem 'rspec-rails', '3.3.0'
+# gem 'guard-rspec','1.2.2'
+gem 'zeus'
+gem 'paper_trail'
+gem 'jquery-ui-rails'
+#gem 'rails3-jquery-autocomplete'
+gem "rspec-rails", :group => [:test, :development]
+group :test do
+  gem "factory_girl_rails"
+  gem "capybara"
+  gem "guard-rspec"
+end
 group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false

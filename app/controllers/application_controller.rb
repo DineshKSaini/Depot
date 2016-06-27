@@ -2,15 +2,17 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   #before_action :authenticate_login!
   before_filter :authenticate_user!
-  #before_filter :authorize
-  #require 'cancan'
+  #before_filter :is_user_admin
+    #require 'cancan'
   rescue_from CanCan::AccessDenied do |exception|
   #flash[:error] = "Access denied."
   redirect_to '/'
   end
 
-  def is_user_admin?
-    current_user.present? && current_user.role?(:admin) ? true : false
+  def is_user_admin
+    if current_user.present? && !current_user.role?(:admin) 
+     redirect_to '/'
+   end
   end
 
   def is_user_customer?

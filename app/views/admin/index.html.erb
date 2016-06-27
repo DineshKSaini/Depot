@@ -8,30 +8,16 @@ It's <%= Time.now %>
 We have <%= pluralize(@total_orders, "order") %>.
 <% if user_signed_in? %>
           
-          <div id="role_assign">
-          <div id="userslist">
-          <select id="user_list">
-          <option value="" selected="true">Select User</option>
-          <%if @users.present? %>
-          <% @users.each do |user| %>
-          <option value='<%=user%>'><%=user.first_name%>  </option>
-
-          <% end %>
-          <% end %>
-          </select> 
-        
-          </div>
-          <div id="roleslist">
-          <select id="role_list">
-          <option value=" " selected="true">Select Role</option>
-          <%if @roles.present? %>
-          <% @roles.each do |role| %>
-          <option value='<%=role%>'><%=role.name%>         </option>
-
-          <% end %>
-          <% end %>
-          </select> 
-          </div>
-          </div>
-          <%== button_to 'submit' ,admin_path(user_id: @users.first , role_id: @roles.first)  %>
+          <%= form_tag("/admin#assign_role", method: "post") do %>
+            <%= label_tag(:automplete_1, "User") %>
+            <%= text_field_tag(:automplete_1) %>
+            <%= hidden_field_tag(:userid) %>
+            <%= select_tag(:role_id, options_for_select([['Role',2],['customer', 1], ['admin', 3]])) 
+            %>
+           
+            <%= submit_tag("Submit") %>
+            <% end %>
+          
  <% end %>
+
+

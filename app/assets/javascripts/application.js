@@ -5,18 +5,7 @@
 // the compiled file.
 //
 //= require jquery
-//= require jquery-ui
+//= require jquery.ui.all
 //= require jquery_ujs
 //= require_tree .
 //= require jquery_nested_form
- $("#assign_role").click(function() {
-  $.ajax({
-      url: "/users",
-      type: "get",
-      //data: {name: $(this).val()},
-      success: function (data) { 
-          // append data to your page
-          $("role_assign").html(data);
-      }
-  });
-});

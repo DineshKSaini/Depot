@@ -3,8 +3,8 @@
 <table>
 	<tr> 
 	<td>
-    
-          <%= image_tag(@product.photo.url(), class: 'list_image') %>
+    <% #binding.pry %>
+          <%= image_tag(@product.photo.url(:medium)) %>
     </td>
     </tr>
     <tr>
@@ -18,5 +18,7 @@
     </tr>
 </table>
 <%= link_to 'Reviews', product_reviews_path(@product) %>
+<% if can? :edit , @Users  %>
 <%= link_to 'Edit', edit_product_path(@product) %> |
+<% end %>
 <%= link_to 'Back', products_path %>

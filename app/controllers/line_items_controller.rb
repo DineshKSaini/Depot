@@ -2,6 +2,7 @@ class LineItemsController < ApplicationController
   skip_before_filter :authorize, only: :create
   # GET /line_items
   # GET /line_items.json
+  load_and_authorize_resource
   def index
     @line_items = LineItem.all
 

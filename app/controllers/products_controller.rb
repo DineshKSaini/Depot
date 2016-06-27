@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
-  load_and_authorize_resource
+  #load_and_authorize_resource
   def index
     #binding.pry
     if !params[:search].blank?
@@ -123,11 +123,12 @@ class ProductsController < ApplicationController
   # PUT /products/1
   # PUT /products/1.json
   def update
+    #binding.pry
     @product = Product.find(params[:id])
     respond_to do |format|
       if @product.update_attributes(params[:product])
+        format.json { render json: @product, status: :ok }
         format.html { redirect_to @product, notice: 'Product was successfully updated.' }
-        format.json { head :ok }
       else
         format.html { render action: "edit" }
         format.json { render json: @product.errors, status: :unprocessable_entity }
@@ -138,6 +139,7 @@ class ProductsController < ApplicationController
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy
+    #binding.pry
     @product = Product.find(params[:id])
     #binding.pry
     #remove @product from $redis datastructure
@@ -146,8 +148,9 @@ class ProductsController < ApplicationController
     #binding.pry
 
     respond_to do |format|
+      format.json {  head :ok }
       format.html { redirect_to products_url }
-      format.json { head :ok }
+      
     end
   end
 

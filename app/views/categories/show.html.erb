@@ -9,7 +9,7 @@
   <% @category.products.each do |product| %>
       <tr >
         <td>
-          <%= image_tag(product.photo.url, class: 'list_image') %>
+          <%= image_tag(product.photo.url(:medium)) %>
         </td>
         <td >
           

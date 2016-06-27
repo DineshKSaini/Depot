@@ -1,5 +1,15 @@
 Depot::Application.routes.draw do
+  get "password_resets/new"
+
  # get "registrations/devise"
+ namespace :api do
+  resources :products do
+    collection do
+      get 'product_details'
+      #put 'update'
+    end
+  end
+ end
 
   #devise_for :members
   devise_scope :user do

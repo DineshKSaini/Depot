@@ -9,7 +9,7 @@ class Ability
     else
       can :manage,Order
       can :manage,Cart
-      can :manage,LineItem
+      #can :manage,LineItem
       #can :read, :admin
   
     end

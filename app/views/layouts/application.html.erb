@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,7 +33,7 @@
                        <% end %>
                   </div>
                 <ul>
-                  <li><a href="http://www....">Home</a></li>
+                  <li><%= link_to 'Home','/'%></li>
                   <li><a href="http://www..../faq">Questions</a></li>
                   <li><a href="http://www..../news">News</a></li>
                   <li><a href="http://www..../contact">Contact</a></li>
@@ -42,9 +43,9 @@
                   <% if can? :index , @Orders  %>
                   <li><%= link_to 'Orders',orders_path%></li>
                   <% end %>
-                  <% if can? :index , @Products  %>
+                  <% #if can? :index , @Products  %>
                   <li><%= link_to 'Products', products_path %></li>
-                  <% end %>
+                  <%# end %>
                   <% if can? :index , @Users  %>
                   <li><%= link_to 'Users',users_path%></li>
                   <% end %>
@@ -52,6 +53,9 @@
                   <ul>
                   <% if can? :index , @Categories  %>
                   <li><%= link_to 'Categories',categories_path %> </li>
+                  <% end %>
+                  <% if can? :index , @Admins  %>
+                  <li><%= link_to 'Admin',admin_path %> </li>
                   <% end %>
                   </ul>
                   <% #=  button_to 'Logout', logout_path, method: :delete %>
